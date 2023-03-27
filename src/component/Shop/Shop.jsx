@@ -8,13 +8,27 @@ function Shop() {
     const [card, setCart] = useState([])
 
     const addToCart=(props)=>{
-        setCart([...card,props]);
+        
+        let preCard = [];
+        let localCard = JSON.parse(localStorage.getItem('card'))
+        if (localCard) {      
+            preCard=[...localCard,props];
+            localStorage.setItem('card',JSON.stringify(preCard))
+       
+        }else{
+            preCard=[props];
+            localStorage.setItem('card',JSON.stringify(preCard))
+        }
+        setCart(localCard);
         
     }
-
     useEffect(()=>{
-        console.log(card);
-    },[card])
+        let localCard = JSON.parse(localStorage.getItem('card'))
+    if (localCard) {  
+        setCart(localCard);
+    }
+    },[card]);
+    
 
     useEffect(() => {
         const loadData = async () => {
@@ -24,6 +38,8 @@ function Shop() {
         }
         loadData()
     }, []);
+
+  
     // console.log(data);
     return (
         <div className='shop-container'>
